@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export default function handler(req, res) {
   const myCache = getCache()
   if (req.method === "POST") {
-    const id = `ingredient-${uuidv4()}`;
+    const id = `platillo-${uuidv4()}`;
     const { title } = req.body;
 
     const success = myCache.set(
@@ -26,21 +26,21 @@ export default function handler(req, res) {
     });
   } else if (req.method === 'GET') {
     try {
-      const value = myCache.keys()
-      console.log('value', value)
+      const value = myCache.keys('platillo-*')
       if (!value) {
         res.status(200).json([])
       }
+      console.log('value', value)
       const result = value.reduce((prev, k) => {
-        if (k.startsWith('ingredient')) {
+        if (k.startsWith('platillo')) {
           return [...prev, myCache.get(k)]
         }
-        return prev;
+        return prev
       }, [])
       
       res.status(200).json(result);
     } catch (e) {
-      res.status(500).send(e.message ?? 'Error fetching the ingredient')
+      res.status(500).send(e.message ?? 'Error fetching the platillo')
     }
   }
 }

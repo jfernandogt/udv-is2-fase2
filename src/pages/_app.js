@@ -23,6 +23,11 @@ export default function App({ Component, pageProps }) {
                 Ingredientes
               </Link>
             </li>
+            <li className="nav-item">
+              <Link href={'/platillos'} className={`nav-link ${router.route === '/platillos' ? 'active' : ''}`}>
+                Platillos
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
