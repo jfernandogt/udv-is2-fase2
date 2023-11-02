@@ -13,9 +13,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-      <div className="input-group mb-3 mt-3">
-        asdasd
-      </div>
+      <p className="mb-3 mt-3">
+        Este proyecto fue realizado por: Juan Fernando Barrios Barrera / 202102655.
+        Consiste en un sistema de inventario de platillos e ingredientes, a cada platillo se le puede asignar un listado de ingredientes.
+      </p>
       </main>
     </>
   )
