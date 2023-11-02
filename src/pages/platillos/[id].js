@@ -1,26 +1,35 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { getItemFromLocalStorageById, updateItemFromLocalStorageById } from "@/utils/storage";
 
 export default function Home() {
   const router = useRouter();
   const [platillo, setPlatillo] = useState({});
+  const [ingredients, setIngredients] = useState({});
   const [status, setStatus] = useState("disabled");
   useEffect(() => {
     if (router.isReady) {
       fetchPlatillo();
+      fetchIngredients();
     }
   }, [router.isReady]);
 
   const fetchPlatillo = async () => {
     const id = router.query.id;
     if (id) {
-      const result = await fetch(`/api/platillos/${id}`);
-      const ing = await result.json();
-      if (ing) {
-        setPlatillo(ing);
+      const platillo = getItemFromLocalStorageById('platillos', id)
+
+      if (platillo) {
+        setPlatillo(platillo);
       }
     }
+  };
+
+  const fetchIngredients = async () => {
+    const result = await fetch("/api/ingredients");
+    const ing = await result.json();
+    setIngredients(ing);
   };
 
   const handleEdit = () => {
@@ -32,13 +41,7 @@ export default function Home() {
   }
 
   const updatePlatillo = async () => {
-    await fetch(`/api/platillos/${platillo.id}`, {
-      method: "PUT",
-      body: JSON.stringify({ title: platillo.title }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    updateItemFromLocalStorageById('platillos', platillo)
 
     await router.push("/platillos");
   }

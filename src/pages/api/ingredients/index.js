@@ -27,7 +27,6 @@ export default function handler(req, res) {
   } else if (req.method === 'GET') {
     try {
       const value = myCache.keys()
-      console.log('value', value)
       if (!value) {
         res.status(200).json([])
       }

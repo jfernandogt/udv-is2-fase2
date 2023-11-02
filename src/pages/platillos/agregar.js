@@ -1,20 +1,14 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { addItemToLocalStorage } from "@/utils/storage";
 
 export default function Home() {
   const router = useRouter();
     const [platillo, setPlatillo] = useState('');
 
   const addPlatillo = async () => {
-    await fetch(`/api/platillos`, {
-      method: "POST",
-      body: JSON.stringify({ title: platillo }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+    addItemToLocalStorage('platillos', platillo)
     await router.push("/platillos");
   }
 

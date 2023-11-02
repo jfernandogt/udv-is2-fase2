@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { getItemsFromLocalStorage, removeItemFromLocalStorageById } from "@/utils/storage";
 
 export default function Home() {
   const router = useRouter();
@@ -11,18 +12,19 @@ export default function Home() {
   }, []);
 
   const fetchPlatillos = async () => {
-    const result = await fetch("/api/platillos");
-    const ing = await result.json();
-    setPlatillos(ing);
+    const platillos = getItemsFromLocalStorage('platillos');
+    setPlatillos(platillos);
   };
 
   const handleDelete = async (id) => {
-    await fetch(`/api/platillos/${id}`, {
-      method: "DELETE",
-    });
+    removeItemFromLocalStorageById('platillos', id);
 
     await fetchPlatillos();
   };
+
+  const handleIngredients = async (id) => {
+    await router.push(`/platillos/ingredientes/${id}`)
+  }
 
   return (
     <>
@@ -57,6 +59,14 @@ export default function Home() {
                     }}
                   >
                     Modificar
+                  </button>{" "}
+                  <button
+                    className="btn btn-info"
+                    onClick={() => {
+                      handleIngredients(id);
+                    }}
+                  >
+                    Asignar Ingredientes
                   </button>{" "}
                   <button
                     className="btn btn-danger"

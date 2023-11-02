@@ -30,7 +30,6 @@ export default function handler(req, res) {
       if (!value) {
         res.status(200).json([])
       }
-      console.log('value', value)
       const result = value.reduce((prev, k) => {
         if (k.startsWith('platillo')) {
           return [...prev, myCache.get(k)]

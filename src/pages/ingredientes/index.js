@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { getItemsFromLocalStorage, removeItemFromLocalStorageById } from "@/utils/storage";
 
 export default function Home() {
   const router = useRouter();
@@ -10,15 +11,12 @@ export default function Home() {
   }, []);
 
   const fetchIngredients = async () => {
-    const result = await fetch("/api/ingredients");
-    const ing = await result.json();
-    setIngredients(ing);
+    const ingredients = getItemsFromLocalStorage('ingredientes');
+    setIngredients(ingredients);
   };
 
   const handleDelete = async (id) => {
-    await fetch(`/api/ingredients/${id}`, {
-      method: "DELETE",
-    });
+    removeItemFromLocalStorageById('ingredientes', id);
 
     await fetchIngredients();
   };

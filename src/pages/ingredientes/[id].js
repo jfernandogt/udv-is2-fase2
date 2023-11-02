@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { getItemFromLocalStorageById, updateItemFromLocalStorageById } from "@/utils/storage";
 
 export default function Home() {
   const router = useRouter();
@@ -15,10 +16,9 @@ export default function Home() {
   const fetchIngredient = async () => {
     const id = router.query.id;
     if (id) {
-      const result = await fetch(`/api/ingredients/${id}`);
-      const ing = await result.json();
-      if (ing) {
-        setIngredient(ing);
+      const ingredient = getItemFromLocalStorageById('ingredientes', id)
+      if (ingredient) {
+        setIngredient(ingredient);
       }
     }
   };
@@ -32,13 +32,7 @@ export default function Home() {
   }
 
   const updateIngredient = async () => {
-    await fetch(`/api/ingredients/${ingredient.id}`, {
-      method: "PUT",
-      body: JSON.stringify({ title: ingredient.title }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    updateItemFromLocalStorageById('ingredientes', ingredient)
 
     await router.push("/ingredientes");
   }
