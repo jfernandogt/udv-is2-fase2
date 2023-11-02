@@ -1,0 +1,8 @@
+.main-body {
+  min-height: calc(100vh - 250px);
+}
+
+.full-page {
+  display: flex;
+  flex-direction: column;
+}
